@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game of Thrones Quote Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 flex items-center justify-center min-h-screen">
+  <div class="bg-gray-800 text-white shadow-2xl rounded-2xl p-8 max-w-md w-full text-center">
+    <h1 class="text-2xl font-bold mb-6 text-yellow-400">Game of Thrones Quote Generator</h1>
+    <div id="quote-box" class="mb-6">
+      <p id="quote" class="text-xl italic text-gray-200">Loading quote...</p>
+      <p id="character" class="mt-4 text-sm text-gray-400">-</p>
+    </div>
+    <button id="new-quote" class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold py-2 px-4 rounded transition duration-200">
+      Get New Quote
+    </button>
+  </div>
+
+  <script>
+    const quoteText = document.getElementById('quote');
+    const characterText = document.getElementById('character');
+    const newQuoteBtn = document.getElementById('new-quote');
+
+    function fetchGoTQuote() {
+      fetch('https://api.gameofthronesquotes.xyz/v1/random')
+        .then(response => response.json())
+        .then(data => {
+          const quote = data.sentence;
+          const character = data.character.name;
+          quoteText.textContent = `"${quote}"`;
+          characterText.textContent = `— ${character}`;
+        })
+        .catch(error => {
+          quoteText.textContent = "Winter is coming... but the quote is not.";
+          characterText.textContent = "";
+        });
+    }
+
+    newQuoteBtn.addEventListener('click', fetchGoTQuote);
+
+    fetchGoTQuote();
+  </script>
+</body>
+</html>
